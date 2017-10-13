@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" style="border: 1px solid #ccc;display: block;margin: 30px auto" width="800" height="800"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+//    canvas.width = 1024; //从js层改变canvas大小
+//    canvas.height = 600;
+    if (canvas.getContext('2d')) {
+        var context = canvas.getContext('2d');// 获取绘图上下文环境
+        /**
+         * 绘制直线
+         */
+        context.beginPath();//开始路径
+        context.moveTo(100,100);//起点
+        context.lineTo(200,200);//终点
+        context.lineTo(100,200);//终点
+        context.lineTo(100,100);//终点
+        context.closePath();//结束路径，避免重绘覆盖
+        context.lineWidth = 2;// 线宽
+        context.strokeStyle = '#a8a8a8';// 颜色
+        context.stroke();//绘制
+        context.fillStyle = 'rgb(2,10,50)';//着色
+        context.fill();//着色
+        /**
+         * 绘制另一条
+         */
+//        context.beginPath();
+//        context.moveTo(300,300);//起点
+//        context.lineTo(500,500);//终点
+//        context.lineTo(300,500);//终点
+//        context.lineTo(300,300);//终点
+//        context.closePath();
+//        context.lineWidth = 2;// 线宽
+//        context.strokeStyle = '#3373ff';// 颜色
+//        context.stroke();//绘制
+//        context.fillStyle = 'rgb(2,100,30)';//着色
+//        context.fill();//着色
+        /**
+         * 绘制七巧板
+         */
+//        var tangram = [
+//            {p:[{x:0,y:0},{x:800,y:0},{x:400,y:400}],color:'#caff67'},
+//            {p:[{x:0,y:0},{x:400,y:400},{x:0,y:800}],color:'#67becf'},
+//            {p:[{x:800,y:0},{x:800,y:400},{x:600,y:600},{x:600,y:200}],color:'#ef3d61'},
+//            {p:[{x:600,y:200},{x:600,y:600},{x:400,y:400}],color:'#f9f51a'},
+//            {p:[{x:400,y:400},{x:600,y:600},{x:400,y:800},{x:200,y:600}],color:'#a594c0'},
+//            {p:[{x:200,y:600},{x:400,y:800},{x:0,y:800}],color:'#fa8ecc'},
+//            {p:[{x:800,y:400},{x:800,y:800},{x:400,y:800}],color:'#61de6e'}
+//            ];
+//        for (var i = 0; i < tangram.length; i++) {
+//            draw(tangram[i], context);
+//        }
+//        function draw(piece,ctx) {
+//            ctx.beginPath();
+//            ctx.moveTo(piece.p[0].x,piece.p[0].y);
+//            for (var i = 1; i < piece.p.length; i++) {
+//                ctx.lineTo(piece.p[i].x,piece.p[i].y);
+//            }
+//            ctx.closePath();
+//            ctx.fillStyle = piece.color;
+//            ctx.fill();
+//            ctx.strokeStyle = 2;
+//            ctx.strokeStyle = '#000';
+//            ctx.stroke();
+//        }
+        /**
+         * 绘制弧线
+         */
+        context.lineWidth = 2;
+        for (var i = 0; i < 10; i++) {
+            context.beginPath();//防止各圆开始线段相连
+            context.arc(300,300,200*Math.random(),0,2*Math.PI,true);
+            context.strokeStyle = '#61de6e'
+            context.stroke()
+        }
+    } else {
+        alert('当前浏览器不支持canvas，请更换浏览器后浏览')
+    }
+
+</script>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas id="canvas" width="800" height="800" style="margin:30px auto;display: block"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    function drawStar(ctx,r,R,x,y,lineColor,fillColor,lineWidth,rot) {//rot 旋转角度
+        ctx.lineWidth = lineWidth? lineWidth : 5;
+        ctx.strokeStyle = lineColor?lineColor: '#ccc';
+        ctx.fillStyle = fillColor?fillColor: '#bebebe';
+        ctx.beginPath();
+        for (var i = 0; i < 5; i++) {
+            ctx.lineTo(Math.cos((18+i*72-rot)/180*Math.PI)*R+x,-Math.sin((18+i*72-rot)/180*Math.PI)*R+y);
+            ctx.lineTo(Math.cos((54+i*72-rot)/180*Math.PI)*r+x,-Math.sin((54+i*72-rot)/180*Math.PI)*r+y);
+        }
+        ctx.lineJoin = 'bevel';
+        ctx.miterLimit = 20;
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+    }
+    drawStar(context,30,300,400,400,'#ccc','#dd3c35',5,60)
+</script>
+</html>
