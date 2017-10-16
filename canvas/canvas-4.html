@@ -12,29 +12,33 @@
     var context = canvas.getContext('2d');
     context.fillStyle = '#000';
     context.fillRect(0,0,canvas.width,canvas.height);
-    for (var i = 0; i < 200; i++) {
+    for (var i = 0; i < 100; i++) {
         var r = Math.random()*10+10;
         var x=Math.abs(Math.random()*canvas.width-40)+20;
         var y=Math.abs(Math.random()*canvas.height-40)+20;
         var rot = Math.random()*360;
-        drawStar(context,r/2,r,x,y,'#d0dd0c','#d0dd0c',5,rot);
+        drawStar(context,r,x,y,'#d0dd0c',rot);
     }
-    function drawStar(ctx,r,R,x,y,lineColor,fillColor,lineWidth,rot) {//rot 旋转角度
-        ctx.lineWidth = lineWidth? lineWidth : 5;
-        ctx.strokeStyle = lineColor?lineColor: '#ccc';
-        ctx.fillStyle = fillColor?fillColor: '#bebebe';
+    function drawStar(ctx,R,x,y,fillColor,rot) {//rot 旋转角度
+        ctx.save();
+        ctx.translate(x,y);
+        ctx.rotate(rot/180*Math.PI);
+        ctx.scale(R,R)
         starPath(ctx);
+//        ctx.lineWidth = lineWidth? lineWidth : 5;
+//        ctx.strokeStyle = lineColor?lineColor: '#ccc';
+        ctx.fillStyle = fillColor?fillColor: '#bebebe';
+//        ctx.lineJoin = 'round';
         ctx.fill();
-        ctx.stroke();
+//        ctx.stroke();
+        ctx.restore();
     }
     function starPath(ctx) {
         ctx.beginPath();
         for (var i = 0; i < 5; i++) {
             ctx.lineTo(Math.cos((18+i*72)/180*Math.PI),-Math.sin((18+i*72)/180*Math.PI));
-            ctx.lineTo(Math.cos((54+i*72)/180*Math.PI),-Math.sin((54+i*72)/180*Math.PI));
+            ctx.lineTo(Math.cos((54+i*72)/180*Math.PI)*0.5,-Math.sin((54+i*72)/180*Math.PI)*0.5);
         }
-        ctx.lineJoin = 'round';
-        ctx.miterLimit = 20;
         ctx.closePath();
     }
 </script>
