@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" width="1200" height="600"></canvas>
+</body>
+<script>
+    var balls = [];
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    context.fillStyle = '#058';
+    window.onload = function () {
+        for (var i = 0; i < 10; i++) {
+            var ball = {
+                x:Math.random()*canvas.width,
+                y:Math.random()*canvas.height,
+                r:Math.random()*50+20
+            }
+            balls[i] = ball;
+        }
+        draw();
+        canvas.addEventListener('mousemove',act);
+    }
+    function draw(x,y) {
+        context.clearRect(x,y,canvas.width,canvas.height);
+        for (var i = 0; i < balls.length; i++) {
+            var ball = balls[i];
+            context.beginPath();
+            context.arc(ball.x,ball.y,ball.r,0,Math.PI*2);
+            context.closePath();
+            if (context.isPointInPath(x, y)) {
+                context.fillStyle = '#993938';
+            } else {
+                context.fillStyle = '#058';
+            }
+            context.fill();
+
+        }
+    }
+    function act(e) {
+        var x = e.clientX - canvas.getBoundingClientRect().left;
+        var y = e.clientY - canvas.getBoundingClientRect().top;
+        draw(x,y);
+    }
+</script>
+</html>
