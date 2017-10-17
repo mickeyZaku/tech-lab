@@ -5,20 +5,34 @@
     <title>Title</title>
 </head>
 <body>
-    <canvas id="canvas" width="800" height="800" style="margin:30px auto;display: block"></canvas>
+    <canvas id="canvas" width="1200" height="600" style="margin:30px auto;display: block"></canvas>
 </body>
 <script>
-    var canvas = document.getElementById('canvas');
-    var context = canvas.getContext('2d');
-    context.fillStyle = '#000';
-    context.fillRect(0,0,canvas.width,canvas.height);
-    for (var i = 0; i < 100; i++) {
-        var r = Math.random()*10+10;
-        var x=Math.abs(Math.random()*canvas.width-40)+20;
-        var y=Math.abs(Math.random()*canvas.height-40)+20;
-        var rot = Math.random()*360;
-        drawStar(context,r,x,y,'#d0dd0c',rot);
-    }
+    window.onload = function () {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+//    var skyStyle = context.createLinearGradient(0,0,0,canvas.height);
+        var skyStyle = context.createRadialGradient(canvas.width/2,canvas.height,0,canvas.width/2,canvas.height,canvas.height)
+        skyStyle.addColorStop(1.0,'#000');
+        skyStyle.addColorStop(0.0,'#035');
+        context.fillStyle = skyStyle;
+        context.fillRect(0,0,canvas.width,canvas.height);
+        for (var i = 0; i < 100; i++) {
+            var r = Math.random()*4+4;
+            var x=Math.abs(Math.random()*canvas.width-40)+20;
+            var y=(Math.abs(Math.random()*canvas.height-40)+20)*0.55;
+            var rot = Math.random()*360;
+            drawStar(context,r,x,y,'#d0dd0c',rot);
+        }
+        fillMoon(context,2,1000,150,50,30);
+        drawLand(context);
+        context.fillStyle = '#390';
+        context.font = 'bold 40px impact';
+        context.fillText('I ❤️ hy',100,200);
+    };
+
+
+
     function drawStar(ctx,R,x,y,fillColor,rot) {//rot 旋转角度
         ctx.save();
         ctx.translate(x,y);
@@ -40,6 +54,56 @@
             ctx.lineTo(Math.cos((54+i*72)/180*Math.PI)*0.5,-Math.sin((54+i*72)/180*Math.PI)*0.5);
         }
         ctx.closePath();
+    }
+    /**
+     *
+     * @param ctx
+     * @param d 控制点x位置
+     * @param x
+     * @param y
+     * @param R
+     * @param rot
+     * @param fillColor
+     */
+    function fillMoon(ctx,d,x,y,R,rot,fillColor) {
+        ctx.save();
+        ctx.translate(x,y);
+        ctx.rotate(rot*Math.PI/180);
+        ctx.scale(R,R);
+        pathMoon(ctx,d);
+        ctx.fillStyle = fillColor || '#fb5';
+        ctx.fill();
+        ctx.restore();
+    }
+    function pathMoon(ctx,d) {
+        ctx.beginPath();
+        ctx.arc(0,0,1,0.5*Math.PI,1.5*Math.PI,true);
+        ctx.moveTo(0,-1);
+        ctx.arcTo(d,0,0,1,distance(0,-1,d,0)/d);
+        ctx.closePath();
+    }
+    function distance(x1,y1,x2,y2) {
+        return Math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+    }
+
+    /**
+     * 绿地
+     * @param context
+     */
+    function drawLand(ctx) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(0,400);
+        ctx.bezierCurveTo(540,300,560,800,1200,400);
+        ctx.lineTo(1200,600);
+        ctx.lineTo(0,600);
+        ctx.closePath();
+        var grd = ctx.createLinearGradient(0,600,0,0);
+        grd.addColorStop(0.0,'#030');
+        grd.addColorStop(0.1,'#580');
+        ctx.fillStyle = grd;
+        ctx.fill();
+        ctx.restore();
     }
 </script>
 </html>

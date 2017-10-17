@@ -57,7 +57,28 @@
         ctx.fillRect(x,y,width,height);
         ctx.strokeRect(x+50,y+50,width,height);
     }
-
+    function drawRoundRect(ctx,x,y,width,height,r) {
+        ctx.save();
+        ctx.translate(x,y);
+        pathRoundRect(ctx,width,height,r);
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 5;
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+        ctx.restore();
+    }
+    function pathRoundRect(ctx,width,height,r) {
+        ctx.beginPath();
+        ctx.arc(width-r,height-r,r,0,Math.PI/2);
+        ctx.lineTo(r,height);
+        ctx.arc(r,height-r,r,Math.PI/2,Math.PI);
+        ctx.lineTo(0,r);
+        ctx.arc(r,r,r,Math.PI,Math.PI*3/2);
+        ctx.lineTo(width-r,0);
+        ctx.arc(width-r,r,r,Math.PI*3/2,Math.PI*2);
+        ctx.closePath();
+    }
+    drawRoundRect(context,300,100,300,300,300);
 
 </script>
 </html>
