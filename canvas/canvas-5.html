@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" width="1200" height="600"></canvas>
+</body>
+<script>
+    var searchLight = {x:400,y:400,r:150,vx:Math.random()*5+10,vy:Math.random()*5+10,g:1.5+Math.random()}
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+//    context.globalCompositeOperation = 'source-over';
+//    context.globalAlpha = 0.7;
+//    for (var i = 0; i < 100; i++) {
+//        var R = Math.floor(Math.random()*255);
+//        var G = Math.floor(Math.random()*255);
+//        var B = Math.floor(Math.random()*255);
+//        context.fillStyle = "rgb("+R+","+G+","+B+")";
+//        context.beginPath();
+//        context.arc(Math.random()*canvas.width,Math.random()*canvas.height,Math.random()*70,0,Math.PI*2);
+//        context.fill();
+//    }
+    setInterval(function () {
+        draw(context);
+        update(canvas.width,canvas.height);
+    },40);
+    function draw(context) {
+        var canvas = context.canvas;
+        context.clearRect(0,0,canvas.width,canvas.height);
+        context.save();
+        context.beginPath();
+        context.fillStyle = '#000';
+        context.fillRect(0,0,canvas.width,canvas.height);
+        context.beginPath();
+        context.fillStyle = '#fff';
+        context.arc(searchLight.x,searchLight.y,searchLight.r,0,Math.PI*2);
+        context.fill();
+        context.clip();
+        context.font = 'bold 170px arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillStyle = '#5589cc';
+        context.fillText('CANVAS',canvas.width/2,canvas.height/4);
+        context.fillText('CANVAS',canvas.width/2,canvas.height/2);
+        context.fillText('CANVAS',canvas.width/2,canvas.height*3/4);
+        context.restore();
+
+    }
+    function update(w,h) {
+        searchLight.x += searchLight.vx;
+        searchLight.y += searchLight.vy;
+        if (searchLight.x - searchLight.r <= 0) {
+            searchLight.vx = -searchLight.vx;
+            searchLight.x = searchLight.r;
+        }
+        if (searchLight.x + searchLight.r >= w) {
+            searchLight.vx = -searchLight.vx;
+            searchLight.x = w - searchLight.r;
+        }
+        if (searchLight.y - searchLight.r <= 0) {
+            searchLight.vy = -searchLight.vy;
+            searchLight.y = searchLight.r;
+        }
+        if (searchLight.y + searchLight.r >= h) {
+            searchLight.vy = -searchLight.vy;
+            searchLight.y = h - searchLight.r;
+        }
+    }
+</script>
+</html>
