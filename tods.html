@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Backbone.js</title>
+    <link href="test.css" media="all" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+
+<!-- Todo App Interface -->
+
+<div id="todoapp">
+
+    <div class="title">
+        <h1>Todos</h1>
+    </div>
+
+    <div class="content">
+
+        <div id="create-todo">
+            <input id="new-todo" placeholder="What needs to be done?" type="text" />
+            <span class="ui-tooltip-top" style="display:none;">Press Enter to save this task</span>
+        </div>
+
+        <div id="todos">
+            <input class="check mark-all-done" type="checkbox" id="check-all"/>
+            <label for="check-all">Mark all as complete</label>
+            <ul id="todo-list"></ul>
+        </div>
+
+        <div id="todo-stats"></div>
+
+    </div>
+
+</div>
+
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_32x32">
+    <a class="jiathis_button_qzone"></a>
+    <a class="jiathis_button_tsina"></a>
+    <a class="jiathis_button_tqq"></a>
+    <a class="jiathis_button_weixin"></a>
+    <a class="jiathis_button_renren"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+<!-- Templates -->
+
+<script type="text/template" id="item-template">
+    <div class="todo <%= done ? 'done' : '' %>">
+        <div class="display">
+            <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+            <label class="todo-content"><%= content %></label>
+            <span class="todo-destroy"></span>
+        </div>
+        <div class="edit">
+            <input class="todo-input" type="text" value="<%= content %>" />
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="stats-template">
+    <% if (total) { %>
+    <span class="todo-count">
+          <span class="number"><%= remaining %></span>
+          <span class="word"><%= remaining == 1 ? 'item' : 'items' %></span> left.
+        </span>
+    <% } %>
+    <% if (done) { %>
+    <span class="todo-clear">
+          <a href="#">
+            Clear <span class="number-done"><%= done %></span>
+            completed <span class="word-done"><%= done == 1 ? 'item' : 'items' %></span>
+          </a>
+        </span>
+    <% } %>
+</script>
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.1/underscore-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/backbone-localstorage.js/1.0/backbone.localStorage-min.js"></script>
+<script src="test.js"></script>
+
+</html>

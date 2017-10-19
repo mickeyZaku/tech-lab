@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" width="1000" height="600" style="border: 1px solid #ccc;margin: 30px auto;display: block">
+</canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    context.lineWidth = 15;
+    context.strokeStyle = '#6ebdcc';
+    context.beginPath();
+    context.moveTo(100,100);
+    context.lineTo(200,200);
+    context.lineCap = 'butt';
+    context.stroke();
+    context.beginPath();
+    context.moveTo(100,200);
+    context.lineTo(200,300);
+    context.lineCap = 'round';
+    context.stroke();
+    context.beginPath();
+    context.moveTo(300,300);
+    context.lineTo(400,400);
+    context.lineCap = 'square';
+    context.stroke();
+
+    /**
+     * 绘制矩形
+     * @param ctx 上下文
+     * @param x 起点坐标
+     * @param y 起点坐标
+     * @param width 矩形宽
+     * @param height 矩形高
+     * @param borderW 线宽
+     * @param borderColor 边框色
+     * @param fillColor 填充色
+     */
+    function drawRect(ctx,x,y,width,height,borderW,borderColor,fillColor) {
+        ctx.beginPath();
+        ctx.rect(x,y,width,height);
+        ctx.closePath();
+        ctx.lineWidth = borderW;
+        ctx.strokeStyle = borderColor;
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+        ctx.stroke();
+    }
+    function drawRectSplit(ctx,x,y,width,height,borderW,borderColor,fillColor) {
+        ctx.lineWidth = borderW;
+        ctx.strokeStyle = borderColor;
+        ctx.fillStyle = fillColor;
+        ctx.fillRect(x,y,width,height);
+        ctx.strokeRect(x+50,y+50,width,height);
+    }
+    function drawRoundRect(ctx,x,y,width,height,r) {
+        ctx.save();
+        ctx.translate(x,y);
+        pathRoundRect(ctx,width,height,r);
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 5;
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+        ctx.restore();
+    }
+    function pathRoundRect(ctx,width,height,r) {
+        ctx.beginPath();
+        ctx.arc(width-r,height-r,r,0,Math.PI/2);
+        ctx.lineTo(r,height);
+        ctx.arc(r,height-r,r,Math.PI/2,Math.PI);
+        ctx.lineTo(0,r);
+        ctx.arc(r,r,r,Math.PI,Math.PI*3/2);
+        ctx.lineTo(width-r,0);
+        ctx.arc(width-r,r,r,Math.PI*3/2,Math.PI*2);
+        ctx.closePath();
+    }
+    drawRoundRect(context,300,100,300,300,300);
+
+</script>
+</html>

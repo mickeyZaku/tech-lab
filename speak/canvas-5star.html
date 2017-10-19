@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" width="1200" height="600" style="display: block;margin: 30px auto;"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    context.lineWidth = 31;
+//    context.lineJoin = 'miter';
+//    context.miterLimit = 1;
+    drawStar(context,40,200,600,300,30);
+    /**
+     *
+     * @param ctx 上下文
+     * @param r 小圆半径
+     * @param R 大圆半径
+     * @param x 圆心x坐标
+     * @param y 圆心y坐标
+     */
+    function drawStar(ctx,r,R,x,y,rot) {
+        ctx.beginPath();
+        for (var i = 0; i < 5; i++) {
+            ctx.lineTo(Math.cos((18+72*i-rot)*Math.PI/180)*R+x,-Math.sin((18+72*i-rot)*Math.PI/180)*R+y);
+            ctx.lineTo(Math.cos((54+72*i-rot)*Math.PI/180)*r+x,-Math.sin((54+72*i-rot)*Math.PI/180)*r+y);
+
+        }
+        ctx.closePath();
+        ctx.stroke();
+    }
+</script>
