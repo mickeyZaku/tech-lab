@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" width="1200" height="600" style="display: block;margin: 30px auto;"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var lg = context.createLinearGradient(0,0,0,600);
+    lg.addColorStop(0.0,"#fff");
+    lg.addColorStop(1.0,"#000");
+    context.fillStyle = lg;
+    context.fillRect(0,0,canvas.width,canvas.height);
+</script>q

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" width="1200" height="600"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    for (var i = 0; i < 50; i++) {
+        var r = Math.floor(Math.random()*255);
+        var g = Math.floor(Math.random()*255);
+        var b = Math.floor(Math.random()*255);
+        context.fillStyle = "rgb("+r+","+g+","+b+")";
+        context.globalAlpha = .9;
+        context.globalCompositeOperation = 'lighter'
+        context.beginPath();
+        context.arc(canvas.width*Math.random(),canvas.height*Math.random(),Math.random()*70,0,Math.PI*2);
+        context.closePath();
+        context.fill();
+
+    }
+</script>
+</html>

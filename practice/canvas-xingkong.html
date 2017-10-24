@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" width="1200" height="600" style="display: block;margin: 30px auto"></canvas>
+</body>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context= canvas.getContext('2d');
+    var skg = context.createRadialGradient(canvas.width/2,canvas.height,0,canvas.width/2,canvas.height,canvas.height);
+    skg.addColorStop(0.0,'#035');
+    skg.addColorStop(1.0,'#000');
+    context.fillStyle = skg;
+    context.fillRect(0,0,canvas.width,canvas.height);
+
+    for (var i = 0; i < 100; i++) {
+        var x = Math.random()*(canvas.width-32)+16;
+        var y = (Math.random()*(canvas.height-32)+16)*0.56;
+        var rot = Math.random()*360;
+        var R = Math.random()*8+8;
+        drawStar(context,x,y,R,rot);
+    }
+    drawMoon(context,50,150,50,30,2);
+    drawLand(context);
+    context.fillStyle = '#f2f2f2';
+    context.strokeStyle = '#fff';
+    context.font = 'bold 50px impact';
+    context.textAlign = 'left';
+    context.textBaseline = 'bottom';
+    console.log(context.measureText('我只是个小前端').width);
+    context.fillText('我只是个小前端',700,400);
+    context.strokeText('我也是个小前端',700,500);
+    function drawStar(ctx,x,y,R,rot) {
+        ctx.save();
+        ctx.translate(x,y);
+        ctx.scale(R,R);
+        ctx.rotate(rot*Math.PI/180);
+        ctx.fillStyle = '#ffe94c';
+        starPath(ctx);
+        ctx.fill();
+        ctx.restore();
+    }
+    function starPath(ctx) {
+        ctx.beginPath();
+        for (var i = 0; i < 5; i++) {
+            ctx.lineTo(Math.cos((18+72*i)*Math.PI/180),-Math.sin((18+72*i)*Math.PI/180));
+            ctx.lineTo(Math.cos((54+72*i)*Math.PI/180)*0.5,-Math.sin((54+72*i)*Math.PI/180)*0.5);
+        }
+        ctx.closePath();
+    }
+    function drawMoon(ctx,x,y,r,rot,d) {
+        ctx.save();
+        ctx.translate(x,y);
+        ctx.scale(r,r);
+        ctx.rotate(rot*Math.PI/180);
+        MoonPath(ctx,d);
+        ctx.fillStyle = '#FFEF17';
+        ctx.fill();
+        ctx.restore();
+    }
+    function MoonPath(ctx,d) {
+        ctx.beginPath();
+        ctx.arc(0,0,1,Math.PI*0.5,Math.PI*1.5,true);
+        ctx.moveTo(0,-1);
+        ctx.arcTo(d,0,0,1,distance(0,-1,d,0)/d);
+        ctx.closePath();
+    }
+    function distance(x1,y1,x2,y2) {
+        return Math.sqrt((x1-x2)*(x1-x2)+Math.pow((y1-y2),2));
+    }
+    function drawLand(ctx) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(0,400);
+        ctx.bezierCurveTo(540,300,360,800,1200,400);
+        ctx.lineTo(1200,600);
+        ctx.lineTo(0,600);
+        ctx.closePath();
+        var ls = ctx.createLinearGradient(0,600,0,0);
+        ls.addColorStop(0,'#004e00');
+        ls.addColorStop(1,'#005D00');
+        ctx.fillStyle = ls;
+        ctx.fill();
+        ctx.restore();
+    }
+</script>
+</html>
