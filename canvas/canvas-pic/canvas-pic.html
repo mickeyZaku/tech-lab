@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="background: #3e3e3e;">
+<canvas id="canvas" style="display: block;margin: 30px auto;border: 1px solid #ccc">
+    您的浏览器不支持canvas，请更换浏览器
+</canvas>
+<input id="slider" type="range" style="display: block;margin: 20px auto;width: 800px;" min="0.5" max="3.0" step="0.01" value="1.0"/>
+</body>
+<script>
+    let canvas = document.getElementById('canvas');
+    canvas.width = 690;
+    canvas.height = 460;
+
+    let slider = document.getElementById('slider');
+    let scale = slider.value;
+
+    let img = new Image();
+
+    let context = canvas.getContext('2d');
+
+    img.src = 'tu.jpg';
+    img.onload = function () {
+        drawImgScale(scale);
+        window.onmousemove = function () {
+            scale = slider.value;
+            drawImgScale(scale);
+        }
+    };
+    function drawImgScale(scale) {
+        context.clearRect(0,0,canvas.width,canvas.height);
+        let imgW = 690*scale;
+        let imgH = 460*scale;
+        let dx = canvas.width/2 - imgW/2;
+        let dy = canvas.height/2 - imgH/2;
+        context.drawImage(img,dx,dy,imgW,imgH)
+    };
+//    context.fillStyle = '#923'
+//    context.fillRect(100,100,400,400);
+</script>
+</html>
