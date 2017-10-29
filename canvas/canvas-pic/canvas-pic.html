@@ -9,35 +9,125 @@
     您的浏览器不支持canvas，请更换浏览器
 </canvas>
 <input id="slider" type="range" style="display: block;margin: 20px auto;width: 800px;" min="0.5" max="3.0" step="0.01" value="1.0"/>
+<span id="rangeValue" style="position: relative;display: block;text-align: center;color: #ffffff;">1</span>
+<canvas id="water-mark" style="display: none;margin: 0 auto; border: 1px solid #ccc;"></canvas>
+<canvas id="off" style="display: none"></canvas>
 </body>
 <script>
     let canvas = document.getElementById('canvas');
+    let context = canvas.getContext('2d');
+
+    let scaleF;
+
+    let waterCanvas = document.getElementById('water-mark');
+    let waterContent = waterCanvas.getContext('2d');
+
+    let offCanvas = document.getElementById('off');
+    let offContext = offCanvas.getContext('2d');
+
+    let isMouseDown = false;
     canvas.width = 690;
     canvas.height = 460;
-
     let slider = document.getElementById('slider');
+
     let scale = slider.value;
 
     let img = new Image();
-
-    let context = canvas.getContext('2d');
 
     img.src = 'tu.jpg';
     img.onload = function () {
         drawImgScale(scale);
         window.onmousemove = function () {
+
+            offCanvas.width = img.width;
+            offCanvas.height = img.height;
+            scaleF = offCanvas.width/canvas.width;
             scale = slider.value;
+            rangeValue.innerText = scale;
             drawImgScale(scale);
+            offContext.drawImage(img,0,0);
         }
     };
+    canvas.onmousedown = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        isMouseDown = true;
+        let point = windowToCanvas(e.clientX,e.clientY);
+        drawMag(isMouseDown,point);
+    };
+    canvas.onmouseup = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        isMouseDown = false;
+        drawMag(false);
+    };
+    canvas.onmousemove = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (isMouseDown) {
+            let point = windowToCanvas(e.clientX,e.clientY);
+            drawMag(isMouseDown,point);
+        }
+    };
+    canvas.onmouseout = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        isMouseDown = false;
+        drawMag(false)
+    }
+
+    function windowToCanvas(x,y) { //获取canvas上点坐标
+        let box = canvas.getBoundingClientRect();
+        x = x - box.left;
+        y = y - box.top;
+        return {x:Math.round(x),y:Math.round(y)}
+    }
+
     function drawImgScale(scale) {
         context.clearRect(0,0,canvas.width,canvas.height);
         let imgW = 690*scale;
         let imgH = 460*scale;
         let dx = canvas.width/2 - imgW/2;
         let dy = canvas.height/2 - imgH/2;
-        context.drawImage(img,dx,dy,imgW,imgH)
-    };
+
+        //水印
+        waterCanvas.width = 600;
+        waterCanvas.height = 100;
+        waterContent.font = `bold ${scale*50}px arial`;
+        waterContent.lineWidth = 1;
+        waterContent.fillStyle = 'rgba(0,0,80,0.5)';
+        waterContent.textBaseline = 'middle';
+        waterContent.fillText('==mickeyZaku==',50,50);
+
+        context.drawImage(img,dx,dy,imgW,imgH);
+        context.drawImage(waterCanvas,dx,canvas.height-dy-waterCanvas.height);// 离屏canvas
+    }
+    function drawMag(flag,point) {
+        drawImgScale(scale);
+        if (flag) {
+            drawMag2(point);
+        }
+    }
+    function drawMag2(point) {
+        let imgcx = point.x*scale;
+        let imgcy = point.y*scale;
+        var mr = 100;
+        let sx = imgcx -mr;
+        let sy = imgcy -mr;
+
+        let dx = point.x - mr;
+        let dy = point.y - mr;
+        context.save();
+        context.lineWidth = 10;
+        context.strokeStyle = 'rgba(27,6,80,.6)';
+        context.beginPath();
+        context.arc(point.x,point.y,mr,0,Math.PI*2);
+        context.stroke();
+        context.clip();
+        context.drawImage(offCanvas,sx,sy,2*mr,2*mr,dx,dy,2*mr,2*mr);
+        context.restore();
+
+    }
 //    context.fillStyle = '#923'
 //    context.fillRect(100,100,400,400);
 </script>

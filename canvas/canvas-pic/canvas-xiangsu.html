@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas1" style="display: block;margin: 30px auto;border: 1px solid #ccc" width="690" height="460">
+    浏览器不支持canvas，请更换浏览器
+</canvas>
+<canvas id="canvas2" style="display: block;margin: 30px auto;border: 1px solid #ccc" width="690" height="460">
+    浏览器不支持canvas，请更换浏览器
+</canvas>
+<div style="text-align: center;margin: 30px auto;">
+    <a href="javascript:filter()">grey</a>
+    <a href="javascript:blackFilter()">black</a>
+    <a href="javascript:greenFilter()">green</a>
+    <a href="javascript:redFilter()">red</a>
+    <a href="javascript:reverse()">reverse</a>
+    <!--<a href="javascript:_blur()">blur</a>-->
+</div>
+</body>
+<script>
+    let canvas1 = document.getElementById('canvas1');
+    let context1 = canvas1.getContext('2d')
+
+    let canvas2 = document.getElementById('canvas2');
+    let context2 = canvas2.getContext('2d')
+    window.onload = function () {
+
+        let img = new Image();
+        img.src = 'tu.jpg';
+        img.onload = function () {
+            context1.drawImage(img,0,0,canvas1.width,canvas1.height);
+        }
+    }
+    function filter() {
+       let imgData = context1.getImageData(0, 0, canvas1.width, canvas1.height);
+       let pxData = imgData.data;
+        for (var i = 0; i < canvas2.width*canvas2.height; i++) {
+//            pxData[4*i] = 0;
+//            pxData[4*i+1] = 0;
+//            pxData[4*i+2] = 0;
+
+
+            //灰度滤镜
+            let r = pxData[4*i];
+            let g = pxData[4*i+1];
+            let b = pxData[4*i+2];
+            let grey = r*0.3+g*0.59+b*0.11;//灰度值
+
+            pxData[4*i] = grey
+            pxData[4*i+1] = grey
+            pxData[4*i+2] = grey
+
+        }
+       context2.putImageData(imgData,0, 0, 0, 0, canvas2.width, canvas2.height);
+    }
+    function blackFilter() {
+        let imgData = context1.getImageData(0, 0, canvas1.width, canvas1.height);
+        let pxData = imgData.data;
+        for (var i = 0; i < canvas2.width*canvas2.height; i++) {
+//            pxData[4*i] = 0;
+//            pxData[4*i+1] = 0;
+//            pxData[4*i+2] = 0;
+
+            //黑白滤镜
+            let r = pxData[4*i];
+            let g = pxData[4*i+1];
+            let b = pxData[4*i+2];
+            let grey = r*0.3+g*0.59+b*0.11;//灰度值
+
+            if (grey > 255/2) {
+                grey = 255
+            } else {
+                grey = 0
+            }
+            pxData[4*i] = grey;
+            pxData[4*i+1] = grey;
+            pxData[4*i+2] = grey;
+        }
+        context2.putImageData(imgData,0, 0, 0, 0, canvas2.width, canvas2.height);
+
+    }
+    function greenFilter() {
+        let imgData = context1.getImageData(0, 0, canvas1.width, canvas1.height);
+        let pxData = imgData.data;
+        for (var i = 0; i < canvas2.width*canvas2.height; i++) {
+            pxData[4*i] = 0;
+//            pxData[4*i+1] = 0;
+//            pxData[4*i+2] = 0;
+
+        }
+        context2.putImageData(imgData,0, 0, 0, 0, canvas2.width, canvas2.height);
+    }
+    function redFilter() {
+        let imgData = context1.getImageData(0, 0, canvas1.width, canvas1.height);
+        let pxData = imgData.data;
+        for (var i = 0; i < canvas2.width*canvas2.height; i++) {
+//            pxData[4*i] = 0;
+            pxData[4*i+1] = 0;
+//            pxData[4*i+2] = 0;
+
+        }
+        context2.putImageData(imgData,0, 0, 0, 0, canvas2.width, canvas2.height);
+    }
+    function reverse() {
+        let imgData = context1.getImageData(0, 0, canvas1.width, canvas1.height);
+        let pxData = imgData.data;
+        for (var i = 0; i < canvas2.width*canvas2.height; i++) {
+//            pxData[4*i] = 0;
+//            pxData[4*i+1] = 0;
+//            pxData[4*i+2] = 0;
+
+            //反色
+            let r = pxData[4*i];
+            let g = pxData[4*i+1];
+            let b = pxData[4*i+2];
+
+
+            pxData[4*i] = 255-r;
+            pxData[4*i+1] = 255-g;
+            pxData[4*i+2] = 255-b;
+        }
+        context2.putImageData(imgData,0, 0, 0, 0, canvas2.width, canvas2.height);
+
+    }
+    function _blur() {
+
+        let imgTempData = context1.getImageData(0, 0, canvas1.width, canvas1.height);
+        let pxTempData = imgTempData.data;
+
+        let imgData = context1.getImageData(0, 0, canvas1.width, canvas1.height);
+        let pxData = imgData.data;
+
+
+        for (var i = 1; i < canvas2.height-1; i++) {
+            for (var j = 1; j < canvas2.width-1; j++) {
+
+                var totalr = 0,totalb = 0,totalg = 0;
+                for (var dx = -1; dx <= 1; dx++) {
+                    for (var dy = -1; dy <= 1; dy++) {
+                        var x = i + dx;
+                        var y = j + dy;
+
+                        var p = x*canvas2.width + y;
+                        totalg += imgTempData[p*4+1];
+                        totalr += imgTempData[p*4+0];
+                        totalb += imgTempData[p*4+2];
+                    }
+
+                }
+                console.log(totalr, totalg, totalb);
+                var p = i*canvas2.width + j;
+                pxData[p*4+0] = totalr/9;
+                pxData[p*4+1] = totalg/9;
+                pxData[p*4+2] = totalb/9;
+
+
+            }
+            
+        }
+
+        context2.putImageData(imgData,0, 0, 0, 0, canvas2.width, canvas2.height);
+    }
+</script>
+</html>
